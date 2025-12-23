@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Heart Animation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    canvas {
+      background: black;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="heartCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById("heartCanvas");
+    const ctx = canvas.getContext("2d");
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    function hearta(k) {
+      return 15 * Math.pow(Math.sin(k), 3);
+    }
+
+    function heartb(k) {
+      return (
+        12 * Math.cos(k) -
+        5 * Math.cos(2 * k) -
+        2 * Math.cos(3 * k) -
+        Math.cos(4 * k)
+      );
+    }
+
+    ctx.fillStyle = "red";
+
+    let i = 0;
+    const scale = Math.min(canvas.width, canvas.height) / 40;
+
+    function drawHeart() {
+      if (i > 6000) return;
+
+      const x = hearta(i) * scale + canvas.width / 2;
+      const y = -heartb(i) * scale + canvas.height / 2;
+
+      ctx.beginPath();
+      ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      i += 0.5;
+      requestAnimationFrame(drawHeart);
+    }
+
+    drawHeart();
+  </script>
+</body>
+</html>
